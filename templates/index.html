@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mahsulot Sotish Kechikishlarini Bashoratlash</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Sun’iy intellekt asosida mahsulotlarni sotishdagi kechikishlarni aniqlash dasturiy vositasi</h1>
+            <p>Sun’iy intellekt asosida mahsulotlarni sotishdagi kechikishlarni aniqlash qarorlarini qabul qilishga ko‘maklashish dasturiy vositasi</p>
+        </header>
+        </header>
+        <div class="menu">
+            <button class="menu-btn active" data-target="results">Natijalar</button>
+            <button class="menu-btn" data-target="prediction">Natija Olish</button>
+            <button class="menu-btn" data-target="training">Yangi Mashinaviy O'qitish</button>
+        </div>
+        <!-- Results Section -->
+        <div class="content-section active" id="results">
+            <div class="content">
+                <div class="model-selection">
+                    <h2>Modelni Tanlash</h2>
+                    <div class="models-container">
+                        <!-- <input type="radio" name="model" id="qnn" class="model-checkbox" value="Quantum Neural Network">
+                        <label for="qnn" class="model-label">Quantum Neural Network</label>
+
+                        <input type="radio" name="model" id="vqr" class="model-checkbox" value="VQR">
+                        <label for="vqr" class="model-label">VQR</label> -->
+
+                        <input type="radio" name="model" id="mlp" class="model-checkbox" value="mlp" checked>
+                        <label for="mlp" class="model-label">MLPRegressor</label>
+
+                        <input type="radio" name="model" id="svr" class="model-checkbox" value="svm">
+                        <label for="svr" class="model-label">SVR</label>
+
+                        <input type="radio" name="model" id="catboost" class="model-checkbox" value="catboost">
+                        <label for="catboost" class="model-label">CatBoostRegressor</label>
+
+                        <input type="radio" name="model" id="gradientbosting" class="model-checkbox" value="gradient_boosting">
+                        <label for="gradientbosting" class="model-label">Gradient Boosting</label>
+
+                        <input type="radio" name="model" id="bagging1" class="model-checkbox" value="bagging">
+                        <label for="bagging1" class="model-label">Bagging Regressor</label>
+                        
+                        <input type="radio" name="model" id="randompatches" class="model-checkbox" value="random_patches">
+                        <label for="randompatches" class="model-label">Random Patches</label>
+
+                        <input type="radio" name="model" id="randomforest" class="model-checkbox" value="random_forest">
+                        <label for="randomforest" class="model-label">Random Forest</label>
+
+                        <!-- <input type="radio" name="model" id="arima" class="model-checkbox" value="ARIMA">
+                        <label for="arima" class="model-label">ARIMA</label>
+
+                        <input type="radio" name="model" id="sarima" class="model-checkbox" value="SARIMA">
+                        <label for="sarima" class="model-label">SARIMA</label>
+
+                        <input type="radio" name="model" id="lstm" class="model-checkbox" value="LSTM">
+                        <label for="lstm" class="model-label">LSTM</label> -->
+                    </div>
+                    <button id="predict-btn" class="predict-btn">
+                        <i class="fas fa-chart-line"></i> Bashoratni Boshlash
+                    </button>
+                </div>
+
+                <div class="results">
+                    <div class="loader" id="loader">
+                        <div class="loader-spinner"></div>
+                        <p>Model ishlayapti, iltimos kuting...</p>
+                    </div>
+
+
+                    <div class="results-content" id="results-content">
+                        <div class="metrics">
+                            <div class="metric-card">
+                                <div class="metric-title">MAE</div>
+                                <div class="metric-value" id="mae-value">0.00</div>
+                            </div>
+                            <div class="metric-card">
+                                <div class="metric-title">RMSE</div>
+                                <div class="metric-value" id="rmse-value">0.00</div>
+                            </div>
+                            <div class="metric-card">
+                                <div class="metric-title">R²</div>
+                                <div class="metric-value" id="r2-value">0.00</div>
+                            </div>
+                        </div>
+
+                        <div class="chart-container">
+                            <canvas id="result-chart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Prediction Section -->
+        <div class="content-section" id="prediction">
+            <h2>Bashorat Qilish Uchun Ma'lumotlarni Kiriting</h2>
+            
+            <form id="prediction-form" class="prediction-form">
+                <div class="form-group">
+                    <label for="day">Kun</label>
+                    <input type="number" id="day" class="form-control" min="1" max="31" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="month">Oy</label>
+                    <input type="number" id="month" class="form-control" min="1" max="12" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="year">Yil</label>
+                    <input type="number" id="year" class="form-control" min="2020" max="2030" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="product-id">Mahsulot ID</label>
+                    <input type="text" id="product-id" class="form-control" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="agent-id">Agent ID</label>
+                    <input type="text" id="agent-id" class="form-control" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="category">Kategoriya</label>
+                    <select id="category" class="form-control" required>
+                        <option value="">Tanlang</option>
+                        <option value="0">Oddiy</option>
+                        <option value="1">Upakovka</option>
+                        <option value="2">Rospnoy</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="week-name">Hafta Kuni</label>
+                    <select id="week-name" class="form-control" required>
+                        <option value="">Tanlang</option>
+                        <option value="0">Dushanba</option>
+                        <option value="1">Seshanba</option>
+                        <option value="2">Chorshanba</option>
+                        <option value="3">Payshanba</option>
+                        <option value="4">Juma</option>
+                        <option value="5">Shanba</option>
+                        <option value="6">Yakshanba</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="holiday">Bayram</label>
+                    <select id="holiday" class="form-control" required>
+                        <option value="">Tanlang</option>
+                        <option value="0">Yo'q</option>
+                        <option value="1">Ha</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="unit-price">Birlik Narxi ($)</label>
+                    <input type="number" id="unit-price" class="form-control" min="0" step="0.01" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="prediction-model-select">Modelni Tanlash</label>
+                    <select id="prediction-model-select" class="form-control" required>
+                        <option value="">Tanlang</option>
+                        <option value="mlp">MLPRegressor</option>
+                        <option value="svm">SVR</option>
+                        <option value="catboost">CatBoostRegressor</option>
+                        <option value="gradient_boosting">Gradient Boosting</option>
+                        <option value="bagging">Bagging Regressor</option>
+                        <option value="random_patches">Random Patches</option>
+                        <option value="random_forest">Random Forest</option>
+                    </select>
+                </div>
+
+                <button type="submit" id="calculate-btn-1" class="predict-btn">
+                    <i class="fas fa-calculator"></i> Hisoblash
+                </button>
+            </form>
+
+            <div class="loader" id="prediction-loader" style="display:none;">
+                <div class="loader-spinner"></div>
+                <p>Model ishlayapti, iltimos kuting...</p>
+            </div>
+            
+            <div class="prediction-result" id="prediction-result">
+                <h3>Bashorat Natijasi</h3>
+                <div class="result-value" id="quantity-sold">0</div>
+                <p id="result-message"></p>
+            </div>
+        </div>
+
+
+        <!-- Training Section -->
+        <div class="content-section" id="training">
+            <h2>Yangi Modelni O'qitish</h2>
+            
+            <div class="form-group">
+                <label for="training-file">Ma'lumotlar Faylini Yuklang</label>
+                <div class="file-upload" id="training-file">
+                    <i class="fas fa-cloud-upload-alt"></i>
+                    <p>Faylni bu yerga torting yoki <strong>yuklash</strong> uchun bosing</p>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="training-model">Modelni Tanlash</label>
+                <select id="training-model" class="form-control">
+                    <option name="model_name" value="MLPRegressor">MLPRegressor</option>
+                    <option name="model_name" value="LSTM">LSTM</option>
+                    <option name="model_name" value="CatBoostRegressor">CatBoostRegressor</option>
+                    <option name="model_name" value="RandomForest">Random Forest</option>
+                </select>
+            </div>
+            
+            <div class="param-group">
+                <div class="param-title">Model Parametrlari</div>
+                
+                <div class="training-form">
+                    <div class="form-group">
+                        <label for="learning-rate">O'rganish Tezligi</label>
+                        <input type="number" id="learning-rate" class="form-control" min="0.001" max="1" step="0.001" value="0.01">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="epochs">Epochlar Soni</label>
+                        <input type="number" id="epochs" class="form-control" min="1" max="1000" value="100">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="batch-size">Batch Hajmi</label>
+
+                        <input type="number" id="batch-size" class="form-control" min="1" max="1024" value="32">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="hidden-layers">Yashirin Qatlamlar</label>
+                        <input type="number" id="hidden-layers" class="form-control" min="1" max="10" value="3">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="neurons">Neyronlar Soni</label>
+                        <input type="number" id="neurons" class="form-control" min="1" max="1024" value="128">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="dropout">Dropout</label>
+                        <input type="number" id="dropout" class="form-control" min="0" max="0.9" step="0.1" value="0.2">
+                    </div>
+                </div>
+            </div>
+            
+            <button id="train-btn" class="predict-btn">
+                <i class="fas fa-graduation-cap"></i> Modelni O'qitish
+            </button>
+            
+            <div class="loader" id="training-loader">
+                <div class="loader-spinner"></div>
+                <p>Model o'qitilmoqda, iltimos kuting...</p>
+            </div>
+            
+            <div class="prediction-result result-success" id="training-result" style="display: none;">
+                <h3>Model Muvaffaqiyatli O'qitildi</h3>
+                <p>Model aniqligi: <span id="training-accuracy">95.7%</span></p>
+                <p>Yo'qotish: <span id="training-loss">0.043</span></p>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>© 2025 Mahsulot Sotish Kechikishlari Bashorati. Barcha huquqlar himoyalangan.</p>
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>

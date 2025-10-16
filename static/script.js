@@ -50,7 +50,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const selectedModel = document.querySelector('input[name="model"]:checked').value;
     
         // Flask API ga POST so'rov yuborish
-        fetch("http://127.0.0.1:8000/predict", {
+        fetch("http://127.0.0.1:5000/predict", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -107,7 +107,7 @@ document.addEventListener('DOMContentLoaded', function() {
             model_name: document.getElementById('prediction-model-select').value
         };
 
-        fetch("http://127.0.0.1:8000/predict_sold", {
+        fetch("http://127.0.0.1:5000/predict_sold", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"

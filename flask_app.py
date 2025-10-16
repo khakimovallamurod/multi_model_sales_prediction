@@ -24,7 +24,7 @@ def predict():
         "predicted": y_pred[:30].tolist()
     })
 
-@app.route('/predict_price', methods=["POST"])
+@app.route('/predict_sold', methods=["POST"])
 def data_predict_price():
     data = request.get_json()
     print(data)
@@ -33,7 +33,7 @@ def data_predict_price():
     pred_obj = Prediction(model_path)
     pred_data = pred_obj.test_data_prediction(data= data)
     return jsonify({
-        "predicted_price": pred_data[0]
+        "predicted_quantity": pred_data[0]
     })
 
 if __name__ == "__main__":

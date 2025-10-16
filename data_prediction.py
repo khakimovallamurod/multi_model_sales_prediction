@@ -11,7 +11,7 @@ class Prediction:
         self.model_path = model_path
         self.model = None
 
-    def read_csv_file(self, file_path='datasets/flight_price_data.csv'):
+    def read_csv_file(self, file_path='datasets/grouped_sales_data_finally.csv'):
         """
         Reads a CSV file and returns its content as a list of dictionaries.
         Each dictionary represents a row in the CSV file, with keys as column headers.
@@ -20,7 +20,7 @@ class Prediction:
             reader = csv.reader(file)
             return list(reader)[1:]
         
-    def load_xy_from_csv(self, file_path='datasets/flight_price_data.csv'):
+    def load_xy_from_csv(self, file_path='datasets/grouped_sales_data_finally.csv'):
         """
         CSV fayldan x va y ni ajratib oladi.
         Oxirgi ustun target (y), qolganlari features (x).
